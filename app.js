@@ -1,7 +1,10 @@
 const express = require('express');
 const morgan = require('morgan');
+const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+
+dotenv.config({path : './.env'})
 
 mongoose.connect('mongodb://localhost/APIAuthentication',  { useNewUrlParser: true , useUnifiedTopology: true  });
 
