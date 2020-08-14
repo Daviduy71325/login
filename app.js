@@ -3,9 +3,14 @@ const morgan = require('morgan');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const passport =  require('passport');
+//require('./passport');
+require('./passport')(passport);
 
 dotenv.config({path : './.env'})
 
+
+mongoose.set('useCreateIndex', true);
 mongoose.connect('mongodb://localhost/APIAuthentication',  { useNewUrlParser: true , useUnifiedTopology: true  });
 
 const app = express();
@@ -14,7 +19,8 @@ const app = express();
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
-
+app.use(passport.initialize());
+// require('./passport')
 //Routes
 app.use('/users', require('./routes/users'));
 
