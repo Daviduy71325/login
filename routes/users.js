@@ -10,12 +10,10 @@ router.route('/signup')
     .post(validateBody(schemas.authSchema), usersController.signUp);
 
 router.route('/signin')
-    .post(usersController.signIn);
+    .post(validateBody(schemas.authSchema), passport.authenticate('local', { session : false }),usersController.signIn);
 
 router.route('/secret')
-    .get(passport.authenticate('jwt', { session : false }), function (req, res){
-        debugger;
-        res.json({msg: 'asdf'});
-    });
+    .get(passport.authenticate('jwt', { session : false }, usersController.secret)
+    );
 
-module.exports = router
+module.exports = router;

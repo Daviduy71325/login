@@ -2,12 +2,12 @@ const JWT = require('jsonwebtoken');
 const User =  require('../models/users');
 const { JWT_SECRET } = require('../configuration');
 
-signToken =  user => {
+signToken =  newUser => {
     return JWT.sign({
-        iss: 'DavidUy',
-        sub: user.id,
+        // iss: 'DavidUy',
+        sub: newUser.id,
         iat: new Date().getTime(),
-        exp: new Date().setDate(new Date().getTime() + 1)
+        expiresIn: new Date().setDate(new Date().getTime() + 1)
     }, JWT_SECRET);
 
 }
@@ -29,15 +29,30 @@ module.exports = {
         const token = signToken(newUser);
        
         //respond with token
-        res.status(200).json({ token });
+        res.status(200).json({ success : true,token : 'jwt ' + token});
 
     },
 
     signIn: async (req, res, next) => { 
         //generate token
+        console.log('logged in');
+        const {email, password} = req.value.body;
+
+        // check if email exists
+        const foundUser = await User.findOne({ email: email});
+    
+        //generate the token
+        const token = signToken(foundUser);
+       
+        //respond with token
+        res.status(200).json({ success : true, token : 'jwt ' + token });
     },
 
     secret: async (req, res, next) => { 
-        console.log('i managed to get here');
+        const email = res.email;
+        const foundUser = await User.findOne({ email: email});
+        console.log(foundUser.id);
+        console.log('i managed to get here' + email);
+        
     }
 }

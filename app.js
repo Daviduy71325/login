@@ -4,8 +4,6 @@ const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const passport =  require('passport');
-//require('./passport');
-require('./passport')(passport);
 
 dotenv.config({path : './.env'})
 
@@ -20,7 +18,11 @@ const app = express();
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(passport.initialize());
+require('./passport')(passport);
+
+//require('./routes/users')(passport);
 // require('./passport')
+
 //Routes
 app.use('/users', require('./routes/users'));
 
