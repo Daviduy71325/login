@@ -19,7 +19,7 @@ module.exports = (passport) =>{
         if(!user) { return done(null, false);}
 
         //otherwise, return the user
-        return done(null, user);
+        done(null, user);
          
      }));
 }

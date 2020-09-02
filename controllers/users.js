@@ -35,24 +35,17 @@ module.exports = {
 
     signIn: async (req, res, next) => { 
         //generate token
-        console.log('logged in');
-        const {email, password} = req.value.body;
-
-        // check if email exists
-        const foundUser = await User.findOne({ email: email});
-    
-        //generate the token
-        const token = signToken(foundUser);
+     
+        const token = signToken(req.user);
        
         //respond with token
         res.status(200).json({ success : true, token : 'jwt ' + token });
     },
 
-    secret: async (req, res, next) => { 
-        const email = res.email;
-        const foundUser = await User.findOne({ email: email});
-        console.log(foundUser.id);
-        console.log('i managed to get here' + email);
-        
+    secret: async (req, res) => { 
+        const user = await User.findOne({ email : req.user.email }); 
+        console.log(user);
+        res.status(200).json({ success : true, message : user._id , userName : user.email });
+        //userId : user._id, userName : user.email , userPass : user.password   
     }
 }
